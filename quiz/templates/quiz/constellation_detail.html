@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>{{ constellation.name_ru }} — Constellation Quiz</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .nav-links {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .nav-links a {
+            margin: 0 10px;
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        .constellation-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .constellation-card img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            background-color: #1a1a2e;
+        }
+
+        .constellation-info {
+            padding: 30px;
+        }
+
+        .constellation-info h1 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .constellation-info h2 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+
+        .constellation-info p {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .back-link:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav-links">
+        <a href="/">Главная</a>
+        <a href="/constellations/">Все созвездия</a>
+    </div>
+
+    <div class="constellation-card">
+        {% if constellation.image_url %}
+            <img src="{{ constellation.image_url }}" alt="{constellation.name_ru}">
+        {% endif %}
+
+        <div class="constellation-info">
+            <h1>{{ constellation.name_ru }}</h1>
+            {% if constellation.name_la %}
+                <p>{{ constellation.name_la }}</p>
+            {% endif %}
+
+            {% if constellation.description %}
+                <h2>Описание</h2>
+                <p>{{ constellation.description }}</p>
+            {% endif %}
+
+            <a href="{% url 'constellation_list' %}" class="back-link">Назад к списку</a>
+        </div>
+    </div>
+</body>
+
+</html>

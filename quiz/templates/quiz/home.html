@@ -4,14 +4,54 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Constellation Quiz</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 30px;
+            background-color: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 
 <body>
     <h1>Constellation Quiz</h1>
-    <p>Добро пожаловать в приложение для изучения созвездий!</p>
-    <p>Здесь будут карточки для запоминания и викторина.</p>
+    <p>Погрузись в мир звёзд и созвездий!</p>
+    
+    <div class="buttons">
+        <a href="/constellations/" class="btn">Все созвездия</a>
+        <a href="#" class="btn">Викторина (скоро)</a>
+        <a href="#" class="btn">Добавить созвездие (скоро)</a>
+    </div>
 </body>
 
 </html>
