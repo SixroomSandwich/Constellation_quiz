@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Тест викторины</title>
+</head>
+<body>
+    <h1>Тестовая страница викторины</h1>
+    
+    <h2>Созвездие: {{ constellation.name_ru }}</h2>
+    <p>ID: {{ constellation.id }}</p>
+    <p>Картинка: {{ constellation.image_url }}</p>
+    
+    <h3>Варианты ответов ({{ options|length }} шт):</h3>
+    <ul>
+    {% for option in options %}
+        <li>{{ option.name_ru }} ({{ option.name_la }})</li>
+    {% empty %}
+        <li style="color: red;">НЕТ ВАРИАНТОВ!</li>
+    {% endfor %}
+    </ul>
+    
+    <p>Всего созвездий: {{ total_count }}</p>
+    <p>Счёт: {{ score.correct }}/{{ score.total }}</p>
+</body>
+</html>

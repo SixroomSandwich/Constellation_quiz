@@ -8,4 +8,7 @@ urlpatterns = [
     path('constellation/create/', views.constellation_create, name='constellation_create'),
     path('constellation/<int:pk>/edit/', views.constellation_edit, name='constellation_edit'),
     path('constellation/<int:pk>/delete/', views.constellation_delete, name='constellation_delete'),
+    path('quiz/', views.quiz_question, name='quiz_question'),
+    path('quiz/check/', views.quiz_check, name='quiz_check'),
+    path('quiz/reset/', views.quiz_reset, name='quiz_reset'),
 ]
