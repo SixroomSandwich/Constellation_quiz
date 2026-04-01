@@ -192,10 +192,11 @@
         {% endif %}
         
         <div class="score">
-            Счёт: {{ score.correct }} / {{ score.total }}
-            {% if score.total > 0 %}
-                ({% widthratio score.correct score.total 100 %}% точности)
-            {% endif %}
+            Счёт: {{ score }} из {{ total_questions }}
+            <div class="progress-bar-container" style="margin-top: 10px;">
+                <div class="progress-bar" style="width: {{ progress_percent }}%; background: #667eea; height: 8px; border-radius: 4px;"></div>
+                <small>Вопрос {{ current_number }} из {{ total_questions }}</small>
+            </div>
         </div>
         
         <div class="question-image">
@@ -227,7 +228,7 @@
         </div>
         
         <div class="stats">
-            Всего созвездий в базе: {{ total_count }}
+            Всего созвездий в базе: {{ total_questions }}
         </div>
     </div>
 </body>

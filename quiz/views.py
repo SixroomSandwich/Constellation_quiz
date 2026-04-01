@@ -74,109 +74,123 @@ def constellation_delete(request, pk):
 
 def quiz_question(request):
     '''Главная страница викторины или следующий вопрос'''
-
+    
     # Получаем все созвездия
-    constellations = list(Constellation.objects.all())
-
+    all_constellations = list(Constellation.objects.all())
+    
     # Если созвездий меньше 2, викторина не работает
-    if len(constellations) < 2:
+    if len(all_constellations) < 2:
         messages.warning(request, 'Добавьте хотя бы 2 созвездия для викторины!')
         return redirect('constellation_list')
     
-    # Получаем текущий вопрос из сессии или создаём новый
-    current = None
-    if 'current_constellation_id' in request.session:
-        # Продолжаем текущий вопрос (после неправильного ответа)
-        try:
-            current = Constellation.objects.get(pk=request.session['current_constellation_id'])
-        except Constellation.DoesNotExist:
-            # Если вдруг созвездие удалили, удаляем из сессии
-            del request.session['current_constellation_id']
+    # Инициализируем сессию для викторины
+    if 'quiz_remaining' not in request.session:
+        # Создаём перемешанный список ID всех созвездий
+        all_ids = [c.id for c in all_constellations]
+        random.shuffle(all_ids)
+        request.session['quiz_remaining'] = all_ids
+        request.session['quiz_completed'] = []
+        request.session['quiz_score'] = 0
+        messages.info(request, 'Начинаем викторину! Всего вопросов: ' + str(len(all_constellations)))
     
-    if not current:
-        # Выбираем случайное созвездие
-        current = random.choice(constellations)
-        request.session['current_constellation_id'] = current.id
-
-    # Получаем варианты ответов (3 случайных других созвездия + правильный)
-    other_constellations = [c for c in constellations if c.id != current.id]
-    options = random.sample(other_constellations, min(3, len(other_constellations)))
-
-    # Добавляем правильный ответ и перемешиваем
+    # Получаем текущий вопрос
+    remaining = request.session.get('quiz_remaining', [])
+    
+    # Если все вопросы пройдены
+    if len(remaining) == 0:
+        total = len(request.session.get('quiz_completed', []))
+        score = request.session.get('quiz_score', 0)
+        
+        # Показываем результат
+        messages.success(request, f'Викторина завершена! Твой результат: {score} из {total} ({int(score/total*100)}%)')
+        
+        # Очищаем сессию
+        request.session.pop('quiz_remaining', None)
+        request.session.pop('quiz_completed', None)
+        request.session.pop('quiz_score', None)
+        
+        return render(request, 'quiz/quiz_complete.html', {
+            'score': score,
+            'total': total,
+            'percentage': int(score/total*100) if total > 0 else 0
+        })
+    
+    # Берём следующий вопрос
+    current_id = remaining[0]
+    current = get_object_or_404(Constellation, pk=current_id)
+    
+    # Получаем варианты ответов (3 других случайных созвездия)
+    other_constellations = [c for c in all_constellations if c.id != current_id]
+    sample_size = min(3, len(other_constellations))
+    options = random.sample(other_constellations, sample_size)
     answer_options = options + [current]
     random.shuffle(answer_options)
-
-    # Сохраняем правильный ответ в сессии для проверки
-    request.session['correct_answer_id'] = current.id
-
-    # Получаем счёт из сессии
-    score = request.session.get('score', {'correct': 0, 'total': 0})
+    
+    # Сохраняем правильный ответ
+    request.session['current_question_id'] = current_id
+    
+    # Получаем статистику
+    completed = len(request.session.get('quiz_completed', []))
+    total = len(all_constellations)
+    score = request.session.get('quiz_score', 0)
     
     return render(request, 'quiz/quiz_question.html', {
         'constellation': current,
         'options': answer_options,
-        'total_count': len(constellations),
+        'current_number': completed + 1,
+        'total_questions': total,
         'score': score,
+        'progress_percent': int((completed + 1) / total * 100),
     })
-
-    '''
-    return render(request, 'quiz/quiz_question_simple.html', {
-        'constellation': current,
-        'options': answer_options,
-        'total_count': len(constellations),
-        'score': score,
-    })
-    '''
     
 
 def quiz_check(request):
-    """Проверка ответа пользователя"""
+    '''Проверка ответа пользователя'''
     if request.method != 'POST':
         return redirect('quiz_question')
     
     selected_id = request.POST.get('selected_id')
-    correct_id = request.session.get('correct_answer_id')
-    current_id = request.session.get('current_constellation_id')
+    current_id = request.session.get('current_question_id')
+    remaining = request.session.get('quiz_remaining', [])
     
-    if not selected_id or not correct_id:
+    if not selected_id or not current_id or not remaining:
         return redirect('quiz_question')
     
     try:
         selected = Constellation.objects.get(pk=selected_id)
-        is_correct = (int(selected_id) == int(correct_id))
+        current = Constellation.objects.get(pk=current_id)
+        is_correct = (int(selected_id) == int(current_id))
     except Constellation.DoesNotExist:
         return redirect('quiz_question')
     
-    # Сохраняем результат в сессии
-    if 'score' not in request.session:
-        request.session['score'] = {'correct': 0, 'total': 0}
-    
-    score = request.session['score']
-    score['total'] += 1
-    
+    # Обновляем статистику
     if is_correct:
-        score['correct'] += 1
+        request.session['quiz_score'] = request.session.get('quiz_score', 0) + 1
         messages.success(request, f'Правильно! {selected.name_ru} - верный ответ!')
-        # Удаляем текущий вопрос, чтобы следующий был новым
-        if 'current_constellation_id' in request.session:
-            del request.session['current_constellation_id']
     else:
-        try:
-            correct_constellation = Constellation.objects.get(pk=correct_id)
-            messages.error(request, f'Неправильно! {selected.name_ru} - неверный ответ!')
-        except Constellation.DoesNotExist:
-            messages.error(request, f'Неправильно!')
-        # Оставляем текущий вопрос для повторной попытки
+        messages.error(request, f'Неправильно! Правильный ответ: {current.name_ru}!')
     
-    request.session['score'] = score
+    # Перемещаем текущий вопрос из remaining в completed
+    if remaining and remaining[0] == current_id:
+        remaining.pop(0)
+        request.session['quiz_remaining'] = remaining
+        
+        completed = request.session.get('quiz_completed', [])
+        completed.append(current_id)
+        request.session['quiz_completed'] = completed
+    
+    # Удаляем временный ключ
+    if 'current_question_id' in request.session:
+        del request.session['current_question_id']
     
     return redirect('quiz_question')
 
 def quiz_reset(request):
-    """Сброс прогресса викторины"""
-    request.session.pop('score', None)
-    request.session.pop('current_constellation_id', None)
-    request.session.pop('correct_answer_id', None)
+    '''Сброс прогресса викторины'''
+    request.session.pop('quiz_remaining', None)
+    request.session.pop('quiz_completed', None)
+    request.session.pop('quiz_score', None)
+    request.session.pop('current_question_id', None)
     
-    messages.info(request, 'Прогресс викторины сброшен! Начинай заново!')
+    messages.info(request, 'Прогресс викторины сброшен!')
     return redirect('quiz_question')

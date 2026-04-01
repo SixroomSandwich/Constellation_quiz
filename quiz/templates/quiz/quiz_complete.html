@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Викторина завершена — Constellation Quiz</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .complete-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        .score span {
+            font-size: 24px;
+            color: #6c757d;
+        }
+
+        .percentage {
+            font-size: 36px;
+            color: #27ae60;
+            margin: 20px 0;
+        }
+
+        .buttons {
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 25px;
+            background-color: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background-color: #5a67d8;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="complete-container">
+        <h1>Поздравляем!</h1>
+        <p>Викторина завершена!</p>
+        
+        <div class="score">
+            {{ score }} <span>из {{ total }}</span>
+        </div>
+        
+        <div class="percentage">
+            {{ percentage }}% правильных ответов
+        </div>
+        
+        <div class="buttons">
+            <a href="{% url 'quiz_question' %}" class="btn">Начать заново</a>
+            <a href="{% url 'constellation_list' %}" class="btn btn-secondary">К созвездиям</a>
+        </div>
+    </div>
+</body>
+
+</html>
