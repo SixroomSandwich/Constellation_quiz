@@ -64,18 +64,18 @@ python manage.py runserver
 ## Структура проекта
 
 Constellation_quiz/
-├── constellation_quiz/     # Настройки проекта
-├── quiz/                   # Основное приложение
-│   ├── migrations/         # Миграции базы данных
-│   ├── templates/quiz/     # HTML-шаблоны
-│   ├── admin.py            # Настройка админ-панели
-│   ├── forms.py            # Формы для добавления/редактирования
-│   ├── models.py           # Модель Constellation
-│   ├── urls.py             # Маршруты приложения
-│   └── views.py            # Логика приложения
-├── db.sqlite3              # База данных
-├── manage.py               # Управляющий скрипт Django
-└── README.md               # Этот файл
+- constellation_quiz/     # Настройки проекта
+- quiz/                   # Основное приложение
+    - migrations/         # Миграции базы данных
+    - templates/quiz/     # HTML-шаблоны
+    - admin.py            # Настройка админ-панели
+    - forms.py            # Формы для добавления/редактирования
+    - models.py           # Модель Constellation
+    - urls.py             # Маршруты приложения
+    - views.py            # Логика приложения
+- db.sqlite3              # База данных
+- manage.py               # Управляющий скрипт Django
+- README.md               # Этот файл
 
 ## Как пользоваться
 
@@ -110,4 +110,5 @@ Constellation_quiz/
 ## Автор
 
 Конышев Матвей
+
 М02-501, МФТИ
