@@ -4,53 +4,76 @@
 
 <head>
     <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Constellation Quiz</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'quiz/css/style.css' %}">
 
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        h1 {
-            font-size: 3em;
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
             margin-bottom: 20px;
+            color: white;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            color: rgba(255,255,255,0.9);
         }
 
         .buttons {
-            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        .btn {
-            display: inline-block;
-            margin: 10px;
+        .btn-large {
             padding: 15px 30px;
-            background-color: white;
-            color: #667eea;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: bold;
-            transition: transform 0.3s;
+            font-size: 18px;
         }
 
-        .btn:hover {
-            transform: scale(1.05);
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            .hero p {
+                font-size: 16px;
+            }
+            .btn-large {
+                padding: 12px 20px;
+                font-size: 16px;
+            }
         }
+
     </style>
 </head>
 
 <body>
-    <h1>Constellation Quiz</h1>
-    <p>Погрузись в мир звёзд и созвездий!</p>
-    
-    <div class="buttons">
-        <a href="/constellations/" class="btn">Все созвездия</a>
-        <a href="{% url 'quiz_question' %}" class="btn">Викторина</a>
-        <a href="{% url 'constellation_create' %}" class="btn">Добавить созвездие</a>
+    <div class="hero">
+        <h1>Constellation Quiz</h1>
+        <p>Погрузись в мир звёзд и созвездий!</p>
+        
+        <div class="buttons">
+            <a href="/constellations/" class="btn btn-large">Все созвездия</a>
+            <a href="{% url 'quiz_question' %}" class="btn btn-large">Викторина</a>            
+            <a href="{% url 'constellation_create' %}" class="btn btn-large">Добавить созвездие</a>
+        </div>
     </div>
 </body>
 

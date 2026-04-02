@@ -6,33 +6,14 @@
 
     <title>Викторина — Constellation Quiz</title>
 
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'quiz/css/style.css' %}">
+
     <style>
         body {
-            font-family: Arial, sans-serif;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-
-        .nav-links {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .nav-links a {
-            margin: 0 10px;
-            color: white;
-            text-decoration: none;
-            background: rgba(255,255,255,0.2);
-            padding: 8px 15px;
-            border-radius: 5px;
-            display: inline-block;
-        }
-
-        .nav-links a:hover {
-            background: rgba(255,255,255,0.3);
         }
 
         .reset-btn {
@@ -116,36 +97,6 @@
             border-color: #667eea;
             color: white;
             transform: translateY(-2px);
-        }
-
-        .messages {
-            margin: 20px 0;
-        }
-
-        .message {
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            text-align: center;
-            animation: fadeIn 0.5s;
-        }
-
-        .message.success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .message.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .message.info {
-            background-color: #cff4fc;
-            color: #055160;
-            border: 1px solid #b6effb;
         }
 
         @keyframes fadeIn {
