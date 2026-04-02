@@ -38,3 +38,4 @@ class ConstellationForm(forms.ModelForm):
         if url and not url.startswith('http'):
             raise forms.ValidationError('Введите корректный URL (должен начинаться с http:// или https://)')
         return url
+    

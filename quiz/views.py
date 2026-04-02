@@ -1,10 +1,13 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
-from .models import Constellation
-from .forms import ConstellationForm
 import random
 
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+
+from .models import Constellation
+from .forms import ConstellationForm
+
 def home(request):
+    '''Главная страница приложения'''
     return render(request, 'quiz/home.html')
 
 def constellation_list(request):
@@ -97,7 +100,7 @@ def quiz_question(request):
     remaining = request.session.get('quiz_remaining', [])
     
     # Если все вопросы пройдены
-    if len(remaining) == 0:
+    if not remaining:
         total = len(request.session.get('quiz_completed', []))
         score = request.session.get('quiz_score', 0)
         

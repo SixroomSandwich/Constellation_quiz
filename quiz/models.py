@@ -22,3 +22,4 @@ class Constellation(models.Model):
         verbose_name = "Созвездие"
         verbose_name_plural = "созвездия"
         ordering = ['name_ru']
+        
